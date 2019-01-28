@@ -43,7 +43,7 @@ The strategy concept is also implemented as a flowable transformer. It has to st
 [Side](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/Side.java)  
 Simple Enum representing order market Side
 
-[Signal](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/Side.java)  
+[Signal](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/Signal.java)  
 Data object representing signal - this will be pushed into stream by strategy transformer
 
 [SimpleBollingerStrategy](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/SimpleBollingerStrategy.java)  
