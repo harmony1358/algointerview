@@ -40,34 +40,34 @@ Bollinger Bands implementation - it makes use of MA and StdDev putting them into
 
 The strategy concept is also implemented as a flowable transformer. It has to stream signals to the chain so they can be processed by executors
 
-[Side](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/Side.java)
+[Side](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/Side.java)  
 Simple Enum representing order market Side
 
-[Signal](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/Side.java)
+[Signal](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/Side.java)  
 Data object representing signal - this will be pushed into stream by strategy transformer
 
-[SimpleBollingerStrategy](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/SimpleBollingerStrategy.java)
+[SimpleBollingerStrategy](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/SimpleBollingerStrategy.java)  
 Implementation of Simple Bollinger Bands strategy
 
 ### Execution
 
-[ExecutionResult](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/execution/ExecutionResult.java)
+[ExecutionResult](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/execution/ExecutionResult.java)  
 Simple Enum representing the resulting state of signal execution
 
-[Execution](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/execution/Execution.java)
+[Execution](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/execution/Execution.java)  
 Data Object representing singnal execution summary (if no closing order - cacheBalance = -1)
 
-[StrategyExecutor](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/execution/StrategyExecutor.java)
+[StrategyExecutor](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/execution/StrategyExecutor.java)  
 The flowable transformer that executes signals in a stream chain using Algotrader's simulator
 
 ### Application
 
-[App](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/App.java)
+[App](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/App.java)  
 Main application class - building a stream chain from all above. Should print out cache balances when closing positions
 
 ## Building
   
-Project is built by "maven" build system.
+Project is built by "maven" build system.  
 Caution - you have to have algotraders simulator installed on your local maven!  
 
 `mvn verify`
