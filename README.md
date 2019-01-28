@@ -79,4 +79,3 @@ Caution - you have to have algotraders simulator installed on your local maven!
 Project can be launched locally with maven task:    
   
 `mvn exec:java`  
-  

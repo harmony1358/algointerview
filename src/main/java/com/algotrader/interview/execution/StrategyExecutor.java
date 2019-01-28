@@ -41,10 +41,9 @@ public class StrategyExecutor implements FlowableTransformer<Signal, Execution> 
             case EXIT_LONG: return this.executeExitLong(signal);
             case EXIT_SHORT: return this.executeExitShort(signal);
             case DO_NOTHING: return this.executeDoNothing(signal);
+            default: return this.executeDoNothing(signal);
 
         }
-
-        return new Execution(signal.getStamp(), signal, -1d, ExecutionResult.ERROR);
 
     }
 

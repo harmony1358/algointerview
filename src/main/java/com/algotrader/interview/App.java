@@ -7,8 +7,6 @@ import com.algotrader.interview.execution.StrategyExecutor;
 import com.algotrader.interview.strategy.Side;
 import com.algotrader.interview.strategy.SimpleBollingerStrategy;
 
-import java.util.logging.Logger;
-
 public class App 
 {
 
@@ -22,8 +20,10 @@ public class App
 
                     //Print out closing balances
 
-                    if (execution.getResult() == ExecutionResult.OK)
-                    if (execution.getSignal().getSide() == Side.EXIT_LONG || execution.getSignal().getSide() == Side.EXIT_SHORT)
+                    if ((execution.getResult() == ExecutionResult.OK)
+                            && (execution.getSignal().getSide() == Side.EXIT_LONG
+                            || execution.getSignal().getSide() == Side.EXIT_SHORT))
+
                     System.out.println("Current balance: " + execution.getBalance());
 
                 });
