@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8fc3d9420b744e59a65bbf854da42511)](https://www.codacy.com/app/harmony1358/algointerview?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=harmony1358/algointerview&amp;utm_campaign=Badge_Grade)
+
 # Algotrader Strategy
 
 This project contains example strategy built for Algotrader.
@@ -43,7 +45,7 @@ The strategy concept is also implemented as a flowable transformer. It has to st
 [Side](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/Side.java)  
 Simple Enum representing order market Side
 
-[Signal](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/Signal.java)  
+[Signal](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/Signal.java~~~~~~~~)  
 Data object representing signal - this will be pushed into stream by strategy transformer
 
 [SimpleBollingerStrategy](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/SimpleBollingerStrategy.java)  
