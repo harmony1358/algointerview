@@ -8,32 +8,37 @@ import org.reactivestreams.Publisher;
 public class SimpleBollingerStrategy implements FlowableTransformer<StudyEnvelope, Signal> {
 
     private final String instrument;
+    private final String valueKey;
     private final int periods;
     private final double deviations;
+
     private double previousPrice;
     private double previousUpper;
     private double previousLower;
     private double previousMiddle;
 
-    public SimpleBollingerStrategy(String instrument, int periods, double deviations) {
+    public SimpleBollingerStrategy(String instrument, String valueKey, int periods, double deviations) {
 
         this.instrument = instrument;
+        this.valueKey = valueKey;
         this.periods = periods;
         this.deviations = deviations;
 
     }
 
     public void reset () {
+
         this.previousPrice = 0d;
         this.previousLower = 0d;
         this.previousMiddle = 0d;
         this.previousUpper = 0d;
+
     }
 
     @Override
     public Publisher<Signal> apply(Flowable<StudyEnvelope> flowable) {
         return flowable
-                .compose(new BollingerBands("BB", "CLOSE", periods, deviations))
+                .compose(new BollingerBands("BB", valueKey, periods, deviations))
                 .map(studies -> {
 
                     double currentPrice = studies.getStudyValue("CLOSE");

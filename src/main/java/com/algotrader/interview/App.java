@@ -16,7 +16,7 @@ public class App
         DataSource ds = new CSVDataSource();
         ds.start("EUR.USD")
                 .map(StudyEnvelope::new)
-                .compose(new SimpleBollingerStrategy("EUR.USD", 30, 1.5))
+                .compose(new SimpleBollingerStrategy("EUR.USD", "CLOSE",30, 1.5))
                 .compose(new StrategyExecutor(1000000))
                 .subscribe(execution -> {
 
