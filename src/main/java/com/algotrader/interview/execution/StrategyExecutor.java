@@ -12,7 +12,7 @@ import org.reactivestreams.Publisher;
 
 public class StrategyExecutor implements FlowableTransformer<Signal, Execution> {
 
-    private Simulator simulator;
+    private final Simulator simulator;
     public StrategyExecutor(double initialCashBalance) {
 
         simulator = new SimulatorImpl();

@@ -2,7 +2,6 @@ package com.algotrader.interview.data;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 
 public class Candle {
 

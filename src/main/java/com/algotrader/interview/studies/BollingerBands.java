@@ -1,6 +1,5 @@
 package com.algotrader.interview.studies;
 
-import com.algotrader.interview.data.Candle;
 import com.algotrader.interview.data.Studies;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
@@ -8,10 +7,10 @@ import org.reactivestreams.Publisher;
 
 public class BollingerBands implements FlowableTransformer<Studies, Studies> {
 
-    private String key;
+    private final String key;
 
-    private int     periods;
-    private double  deviations;
+    private final int     periods;
+    private final double  deviations;
 
     public BollingerBands (String key, int periods, double deviations) {
 
@@ -33,11 +32,10 @@ public class BollingerBands implements FlowableTransformer<Studies, Studies> {
 
                     double upper    = ma + dv;
                     double lower    = ma - dv;
-                    double middle   = ma;
 
                     studies.setStudyValue(this.key + "_UPPER", upper);
                     studies.setStudyValue(this.key + "_LOWER", lower);
-                    studies.setStudyValue(this.key + "_MIDDLE", middle);
+                    studies.setStudyValue(this.key + "_MIDDLE", ma);
 
                     return studies;
                 });

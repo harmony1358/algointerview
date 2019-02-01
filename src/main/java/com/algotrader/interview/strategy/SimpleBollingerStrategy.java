@@ -1,6 +1,5 @@
 package com.algotrader.interview.strategy;
 
-import com.algotrader.interview.data.Candle;
 import com.algotrader.interview.data.Studies;
 import com.algotrader.interview.studies.BollingerBands;
 import io.reactivex.Flowable;
@@ -9,9 +8,9 @@ import org.reactivestreams.Publisher;
 
 public class SimpleBollingerStrategy implements FlowableTransformer<Studies, Signal> {
 
-    private String instrument;
-    private int periods;
-    private double deviations;
+    private final String instrument;
+    private final int periods;
+    private final double deviations;
     private double previousPrice;
     private double previousUpper;
     private double previousLower;

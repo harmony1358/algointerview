@@ -15,10 +15,10 @@ public class CSVDataSource implements DataSource {
         return Flowable.using(
                 () -> new BufferedReader(new FileReader(file)),
                 reader -> Flowable.fromIterable(() -> reader.lines().iterator()),
-                reader -> reader.close()
+                BufferedReader::close
         )
                 .skip(1)
-                .map(line -> Candle.parse(line));
+                .map(Candle::parse);
 
     }
 

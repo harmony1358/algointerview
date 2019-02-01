@@ -1,6 +1,5 @@
 package com.algotrader.interview.studies;
 
-import com.algotrader.interview.data.Candle;
 import com.algotrader.interview.data.Studies;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
@@ -10,10 +9,10 @@ import java.util.LinkedList;
 
 public class MA implements FlowableTransformer<Studies, Studies> {
 
-    private String key;
-    private int periods;
+    private final String key;
+    private final int periods;
 
-    private LinkedList<Double> window = new LinkedList<>();
+    private final LinkedList<Double> window = new LinkedList<>();
     private Double sum = 0D;
     private int counter = 0;
 
