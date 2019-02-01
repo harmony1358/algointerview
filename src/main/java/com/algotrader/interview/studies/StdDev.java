@@ -1,6 +1,7 @@
 package com.algotrader.interview.studies;
 
 import com.algotrader.interview.data.Candle;
+import com.algotrader.interview.data.Studies;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import org.reactivestreams.Publisher;
@@ -8,7 +9,7 @@ import org.reactivestreams.Publisher;
 import java.util.LinkedList;
 import java.util.Vector;
 
-public class StdDev implements FlowableTransformer<Candle, Candle> {
+public class StdDev implements FlowableTransformer<Studies, Studies> {
 
     private String key;
     private int periods;
@@ -29,24 +30,24 @@ public class StdDev implements FlowableTransformer<Candle, Candle> {
     }
 
     @Override
-    public Publisher<Candle> apply(Flowable<Candle> flowable) {
+    public Publisher<Studies> apply(Flowable<Studies> flowable) {
 
         return flowable
                 .compose(new MA(this.key + "_MA", this.periods))
-                .map(candle ->  {
+                .map(studies ->  {
 
                     counter = counter < periods ? counter + 1 : counter; // We don't increment counter when it reaches periods
 
-                    Double mean = candle.getStudyValue(this.key+"_MA");
-                    Double variation = Math.pow(candle.getClose() - mean, 2);
+                    Double mean = studies.getStudyValue(this.key+"_MA");
+                    Double variation = Math.pow(studies.getCandle().getClose() - mean, 2);
                     variations += variation;
                     window.add(variation);
 
                     variations = window.size() > periods ? variations - window.remove() : variations;
 
-                    candle.setStudyValue(this.key, variations / counter);
+                    studies.setStudyValue(this.key, variations / counter);
 
-                    return candle;
+                    return studies;
 
                 });
 

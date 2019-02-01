@@ -1,11 +1,12 @@
 package com.algotrader.interview.studies;
 
 import com.algotrader.interview.data.Candle;
+import com.algotrader.interview.data.Studies;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import org.reactivestreams.Publisher;
 
-public class BollingerBands implements FlowableTransformer<Candle, Candle> {
+public class BollingerBands implements FlowableTransformer<Studies, Studies> {
 
     private String key;
 
@@ -21,24 +22,24 @@ public class BollingerBands implements FlowableTransformer<Candle, Candle> {
     }
 
     @Override
-    public Publisher<Candle> apply(Flowable<Candle> flowable) {
+    public Publisher<Studies> apply(Flowable<Studies> flowable) {
         return flowable
                 .compose(new StdDev(this.key + "_SD", this.periods)) // We don't have to chain MA since it is calculated by StdDev
-                .map(candle -> {
+                .map(studies -> {
 
-                    double ma = candle.getStudyValue(this.key + "_SD_MA"); // Fetch MA value from StdDev
-                    double sd = candle.getStudyValue(this.key + "_SD");
+                    double ma = studies.getStudyValue(this.key + "_SD_MA"); // Fetch MA value from StdDev
+                    double sd = studies.getStudyValue(this.key + "_SD");
                     double dv = sd * this.deviations;
 
                     double upper    = ma + dv;
                     double lower    = ma - dv;
                     double middle   = ma;
 
-                    candle.setStudyValue(this.key + "_UPPER", upper);
-                    candle.setStudyValue(this.key + "_LOWER", lower);
-                    candle.setStudyValue(this.key + "_MIDDLE", middle);
+                    studies.setStudyValue(this.key + "_UPPER", upper);
+                    studies.setStudyValue(this.key + "_LOWER", lower);
+                    studies.setStudyValue(this.key + "_MIDDLE", middle);
 
-                    return candle;
+                    return studies;
                 });
     }
 }

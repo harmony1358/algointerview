@@ -11,7 +11,6 @@ public class Candle {
     private Double high;
     private Double low;
     private Double close;
-    private HashMap<String, Double> studies = new HashMap<>();
 
     public Candle(Long stamp, Double open, Double high, Double low, Double close) {
         this.stamp = stamp;
@@ -59,16 +58,6 @@ public class Candle {
 
     public void setClose(Double close) {
         this.close = close;
-    }
-
-    public HashMap<String, Double> getStudies() { return this.studies; }
-
-    public void setStudyValue (String name, Double value) {
-        this.studies.put(name, value);
-    }
-
-    public Double getStudyValue (String name) {
-        return this.studies.get(name);
     }
 
     @Override

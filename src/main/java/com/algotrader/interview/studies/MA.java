@@ -1,13 +1,14 @@
 package com.algotrader.interview.studies;
 
 import com.algotrader.interview.data.Candle;
+import com.algotrader.interview.data.Studies;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import org.reactivestreams.Publisher;
 
 import java.util.LinkedList;
 
-public class MA implements FlowableTransformer<Candle, Candle> {
+public class MA implements FlowableTransformer<Studies, Studies> {
 
     private String key;
     private int periods;
@@ -30,20 +31,20 @@ public class MA implements FlowableTransformer<Candle, Candle> {
     }
 
     @Override
-    public Publisher<Candle> apply(Flowable<Candle> flowable) {
+    public Publisher<Studies> apply(Flowable<Studies> flowable) {
 
 
-        return flowable.map(candle -> {
+        return flowable.map(studies -> {
 
-            sum += candle.getClose();
-            window.add(candle.getClose());
+            sum += studies.getCandle().getClose();
+            window.add(studies.getCandle().getClose());
 
             sum = window.size() > periods ? sum - window.remove() : sum;
             counter = counter < periods ? counter + 1 : counter; // We don't increment counter if it reaches periods
 
-            candle.setStudyValue(key, sum/counter);
+            studies.setStudyValue(key, sum/counter);
 
-            return candle;
+            return studies;
 
         });
 

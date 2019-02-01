@@ -1,12 +1,13 @@
 package com.algotrader.interview.strategy;
 
 import com.algotrader.interview.data.Candle;
+import com.algotrader.interview.data.Studies;
 import com.algotrader.interview.studies.BollingerBands;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import org.reactivestreams.Publisher;
 
-public class SimpleBollingerStrategy implements FlowableTransformer<Candle, Signal> {
+public class SimpleBollingerStrategy implements FlowableTransformer<Studies, Signal> {
 
     private String instrument;
     private int periods;
@@ -32,15 +33,15 @@ public class SimpleBollingerStrategy implements FlowableTransformer<Candle, Sign
     }
 
     @Override
-    public Publisher<Signal> apply(Flowable<Candle> flowable) {
+    public Publisher<Signal> apply(Flowable<Studies> flowable) {
         return flowable
                 .compose(new BollingerBands("BB", periods, deviations))
-                .map(candle -> {
+                .map(studies -> {
 
-                    double currentPrice = candle.getClose();
-                    double bbUpper  = candle.getStudyValue("BB_UPPER");
-                    double bbLower  = candle.getStudyValue("BB_LOWER");
-                    double bbMiddle = candle.getStudyValue("BB_MIDDLE");
+                    double currentPrice = studies.getCandle().getClose();
+                    double bbUpper  = studies.getStudyValue("BB_UPPER");
+                    double bbLower  = studies.getStudyValue("BB_LOWER");
+                    double bbMiddle = studies.getStudyValue("BB_MIDDLE");
 
                     if (crossDown(previousPrice, currentPrice, previousMiddle, bbMiddle)) {
 
@@ -48,7 +49,7 @@ public class SimpleBollingerStrategy implements FlowableTransformer<Candle, Sign
                         previousUpper = bbUpper;
                         previousLower = bbLower;
                         previousMiddle = bbMiddle;
-                        return new Signal(instrument, candle.getStamp(), Side.EXIT_LONG, currentPrice);
+                        return new Signal(instrument, studies.getCandle().getStamp(), Side.EXIT_LONG, currentPrice);
                     }
 
                     if (crossUp(previousPrice, currentPrice, previousMiddle, bbMiddle)) {
@@ -57,7 +58,7 @@ public class SimpleBollingerStrategy implements FlowableTransformer<Candle, Sign
                         previousUpper = bbUpper;
                         previousLower = bbLower;
                         previousMiddle = bbMiddle;
-                        return new Signal(instrument, candle.getStamp(), Side.EXIT_SHORT, currentPrice);
+                        return new Signal(instrument, studies.getCandle().getStamp(), Side.EXIT_SHORT, currentPrice);
                     }
 
                     if (crossUp(previousPrice, currentPrice, previousLower, bbLower)) {
@@ -66,7 +67,7 @@ public class SimpleBollingerStrategy implements FlowableTransformer<Candle, Sign
                         previousUpper = bbUpper;
                         previousLower = bbLower;
                         previousMiddle = bbMiddle;
-                        return new Signal(instrument, candle.getStamp(), Side.BUY, currentPrice);
+                        return new Signal(instrument, studies.getCandle().getStamp(), Side.BUY, currentPrice);
                     }
 
                     if (crossDown(previousPrice, currentPrice, previousUpper, bbUpper)) {
@@ -75,7 +76,7 @@ public class SimpleBollingerStrategy implements FlowableTransformer<Candle, Sign
                         previousUpper = bbUpper;
                         previousLower = bbLower;
                         previousMiddle = bbMiddle;
-                        return new Signal(instrument, candle.getStamp(), Side.SELL, currentPrice);
+                        return new Signal(instrument, studies.getCandle().getStamp(), Side.SELL, currentPrice);
                     }
 
 
@@ -83,7 +84,7 @@ public class SimpleBollingerStrategy implements FlowableTransformer<Candle, Sign
                     previousUpper = bbUpper;
                     previousLower = bbLower;
                     previousMiddle = bbMiddle;
-                    return new Signal(instrument, candle.getStamp(), Side.DO_NOTHING, currentPrice);
+                    return new Signal(instrument, studies.getCandle().getStamp(), Side.DO_NOTHING, currentPrice);
 
 
                 });
