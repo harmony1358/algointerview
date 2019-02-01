@@ -26,6 +26,7 @@ public class MA implements FlowableTransformer<Candle, Candle> {
     public void reset () {
         this.sum = 0D;
         this.counter = 0;
+        window.clear();
     }
 
     @Override
