@@ -18,6 +18,13 @@
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -35,10 +42,15 @@
       <version>2.2.6</version>
     </dependency>
     <dependency>
-      <groupId>algotrader</groupId>
-      <artifactId>algotrader-simulator</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <groupId>com.github.harmony1358</groupId>
+      <artifactId>simulator</artifactId>
+      <version>v1.0.0</version>
     </dependency>
+    <!--<dependency>-->
+      <!--<groupId>algotrader</groupId>-->
+      <!--<artifactId>algotrader-simulator</artifactId>-->
+      <!--<version>0.0.1-SNAPSHOT</version>-->
+    <!--</dependency>-->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
