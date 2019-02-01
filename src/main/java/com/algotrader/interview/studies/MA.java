@@ -5,15 +5,16 @@ import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import org.reactivestreams.Publisher;
 
+import java.util.LinkedList;
+
 public class MA implements FlowableTransformer<Candle, Candle> {
 
     private String key;
     private int periods;
 
-    private int currentPeriod = 0;
-    private Double previousClose = 0D;
-    private Double previousValue = 0D;
-    private Double cumulativeSum = 0D;
+    private LinkedList<Double> window = new LinkedList<>();
+    private Double sum = 0D;
+    private int counter = 0;
 
     public MA(String key, int periods) {
 
@@ -23,10 +24,8 @@ public class MA implements FlowableTransformer<Candle, Candle> {
     }
 
     public void reset () {
-        this.currentPeriod = 0;
-        this.previousClose = 0D;
-        this.previousValue = 0D;
-        this.cumulativeSum = 0D;
+        this.sum = 0D;
+        this.counter = 0;
     }
 
     @Override
@@ -35,38 +34,16 @@ public class MA implements FlowableTransformer<Candle, Candle> {
 
         return flowable.map(candle -> {
 
-            if (currentPeriod < periods -1) {
+            sum += candle.getClose();
+            window.add(candle.getClose());
 
-                currentPeriod ++;
-                previousValue = candle.getClose();
-                previousClose = candle.getClose();
-                cumulativeSum += candle.getClose();
-                candle.setStudyValue(this.key, candle.getClose());
+            sum = window.size() > periods ? sum - window.remove() : sum;
+            counter = counter < periods ? counter + 1 : counter; // We don't increment counter if it reaches periods
 
-                return candle;
+            candle.setStudyValue(key, sum/counter);
 
-            }
-            else if (currentPeriod == periods -1) {
+            return candle;
 
-                currentPeriod ++;
-                cumulativeSum += candle.getClose();
-                previousValue = cumulativeSum / periods;
-                previousClose = candle.getClose();
-                candle.setStudyValue(this.key, previousValue);
-
-                return candle;
-
-            }
-            else {
-
-                currentPeriod ++;
-                double ma = previousClose + (candle.getClose() - previousValue) / periods;
-                previousValue = ma;
-                previousClose = candle.getClose();
-                candle.setStudyValue(this.key, ma);
-
-                return candle;
-            }
         });
 
     }
