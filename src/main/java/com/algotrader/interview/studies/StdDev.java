@@ -6,7 +6,6 @@ import io.reactivex.FlowableTransformer;
 import org.reactivestreams.Publisher;
 
 import java.util.LinkedList;
-import java.util.Vector;
 
 public class StdDev implements FlowableTransformer<Studies, Studies> {
 
