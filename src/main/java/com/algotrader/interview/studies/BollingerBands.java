@@ -1,29 +1,31 @@
 package com.algotrader.interview.studies;
 
-import com.algotrader.interview.data.Studies;
+import com.algotrader.interview.strategy.StudyEnvelope;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import org.reactivestreams.Publisher;
 
-public class BollingerBands implements FlowableTransformer<Studies, Studies> {
+public class BollingerBands implements FlowableTransformer<StudyEnvelope, StudyEnvelope> {
 
     private final String key;
+    private final String valueKey;
 
     private final int     periods;
     private final double  deviations;
 
-    public BollingerBands (String key, int periods, double deviations) {
+    public BollingerBands (String key, String valueKey, int periods, double deviations) {
 
         this.key = key;
+        this.valueKey = valueKey;
         this.periods = periods;
         this.deviations = deviations;
 
     }
 
     @Override
-    public Publisher<Studies> apply(Flowable<Studies> flowable) {
+    public Publisher<StudyEnvelope> apply(Flowable<StudyEnvelope> flowable) {
         return flowable
-                .compose(new StdDev(this.key + "_SD", this.periods)) // We don't have to chain MA since it is calculated by StdDev
+                .compose(new StdDev(this.key + "_SD", valueKey, periods)) // We don't have to chain MA since it is calculated by StdDev
                 .map(studies -> {
 
                     double ma = studies.getStudyValue(this.key + "_SD_MA"); // Fetch MA value from StdDev

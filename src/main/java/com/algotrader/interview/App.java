@@ -2,7 +2,7 @@ package com.algotrader.interview;
 
 import com.algotrader.interview.data.CSVDataSource;
 import com.algotrader.interview.data.DataSource;
-import com.algotrader.interview.data.Studies;
+import com.algotrader.interview.strategy.StudyEnvelope;
 import com.algotrader.interview.execution.ExecutionResult;
 import com.algotrader.interview.execution.StrategyExecutor;
 import com.algotrader.interview.strategy.Side;
@@ -15,7 +15,7 @@ public class App
 
         DataSource ds = new CSVDataSource();
         ds.start("EUR.USD")
-                .map(Studies::new)
+                .map(StudyEnvelope::new)
                 .compose(new SimpleBollingerStrategy("EUR.USD", 30, 1.5))
                 .compose(new StrategyExecutor(1000000))
                 .subscribe(execution -> {

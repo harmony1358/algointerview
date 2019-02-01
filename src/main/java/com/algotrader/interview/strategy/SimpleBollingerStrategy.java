@@ -1,12 +1,11 @@
 package com.algotrader.interview.strategy;
 
-import com.algotrader.interview.data.Studies;
 import com.algotrader.interview.studies.BollingerBands;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import org.reactivestreams.Publisher;
 
-public class SimpleBollingerStrategy implements FlowableTransformer<Studies, Signal> {
+public class SimpleBollingerStrategy implements FlowableTransformer<StudyEnvelope, Signal> {
 
     private final String instrument;
     private final int periods;
@@ -32,61 +31,56 @@ public class SimpleBollingerStrategy implements FlowableTransformer<Studies, Sig
     }
 
     @Override
-    public Publisher<Signal> apply(Flowable<Studies> flowable) {
+    public Publisher<Signal> apply(Flowable<StudyEnvelope> flowable) {
         return flowable
-                .compose(new BollingerBands("BB", periods, deviations))
+                .compose(new BollingerBands("BB", "CLOSE", periods, deviations))
                 .map(studies -> {
 
-                    double currentPrice = studies.getCandle().getClose();
+                    double currentPrice = studies.getStudyValue("CLOSE");
                     double bbUpper  = studies.getStudyValue("BB_UPPER");
                     double bbLower  = studies.getStudyValue("BB_LOWER");
                     double bbMiddle = studies.getStudyValue("BB_MIDDLE");
 
                     if (crossDown(previousPrice, currentPrice, previousMiddle, bbMiddle)) {
 
-                        previousPrice = currentPrice;
-                        previousUpper = bbUpper;
-                        previousLower = bbLower;
-                        previousMiddle = bbMiddle;
-                        return new Signal(instrument, studies.getCandle().getStamp(), Side.EXIT_LONG, currentPrice);
+                        return emitSignal(instrument, studies.getStamp(), Side.EXIT_LONG,
+                                            currentPrice, bbUpper, bbLower, bbMiddle);
                     }
 
                     if (crossUp(previousPrice, currentPrice, previousMiddle, bbMiddle)) {
 
-                        previousPrice = currentPrice;
-                        previousUpper = bbUpper;
-                        previousLower = bbLower;
-                        previousMiddle = bbMiddle;
-                        return new Signal(instrument, studies.getCandle().getStamp(), Side.EXIT_SHORT, currentPrice);
+                        return emitSignal(instrument, studies.getStamp(), Side.EXIT_SHORT,
+                                            currentPrice, bbUpper, bbLower, bbMiddle);
                     }
 
                     if (crossUp(previousPrice, currentPrice, previousLower, bbLower)) {
 
-                        previousPrice = currentPrice;
-                        previousUpper = bbUpper;
-                        previousLower = bbLower;
-                        previousMiddle = bbMiddle;
-                        return new Signal(instrument, studies.getCandle().getStamp(), Side.BUY, currentPrice);
+                        return emitSignal(instrument, studies.getStamp(), Side.BUY,
+                                            currentPrice, bbUpper, bbLower, bbMiddle);
                     }
 
                     if (crossDown(previousPrice, currentPrice, previousUpper, bbUpper)) {
 
-                        previousPrice = currentPrice;
-                        previousUpper = bbUpper;
-                        previousLower = bbLower;
-                        previousMiddle = bbMiddle;
-                        return new Signal(instrument, studies.getCandle().getStamp(), Side.SELL, currentPrice);
+                        return emitSignal(instrument, studies.getStamp(), Side.SELL,
+                                            currentPrice, bbUpper, bbLower, bbMiddle);
                     }
 
-
-                    previousPrice = currentPrice;
-                    previousUpper = bbUpper;
-                    previousLower = bbLower;
-                    previousMiddle = bbMiddle;
-                    return new Signal(instrument, studies.getCandle().getStamp(), Side.DO_NOTHING, currentPrice);
-
+                    return emitSignal(instrument, studies.getStamp(), Side.DO_NOTHING,
+                                        currentPrice, bbUpper, bbLower, bbMiddle);
 
                 });
+    }
+
+    private Signal emitSignal (String instrument, Long stamp, Side side,
+                               Double price, Double bbUpper, Double bbLower, Double bbMiddle) {
+
+        previousPrice = price;
+        previousUpper = bbUpper;
+        previousLower = bbLower;
+        previousMiddle = bbMiddle;
+
+        return new Signal(instrument, stamp, side, price);
+
     }
 
     private boolean crossUp (double pv, double cv, double pbv, double cbv) {
