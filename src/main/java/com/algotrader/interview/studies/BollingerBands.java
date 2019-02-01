@@ -23,11 +23,10 @@ public class BollingerBands implements FlowableTransformer<Candle, Candle> {
     @Override
     public Publisher<Candle> apply(Flowable<Candle> flowable) {
         return flowable
-                .compose(new MA(this.key + "_MA", this.periods))
-                .compose(new StdDev(this.key + "_SD", this.periods))
+                .compose(new StdDev(this.key + "_SD", this.periods)) // We don't have to chain MA since it is calculated by StdDev
                 .map(candle -> {
 
-                    double ma = candle.getStudyValue(this.key + "_MA");
+                    double ma = candle.getStudyValue(this.key + "_SD_MA"); // Fetch MA value from StdDev
                     double sd = candle.getStudyValue(this.key + "_SD");
                     double dv = sd * this.deviations;
 

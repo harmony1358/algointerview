@@ -5,6 +5,7 @@ import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import org.reactivestreams.Publisher;
 
+import java.util.LinkedList;
 import java.util.Vector;
 
 public class StdDev implements FlowableTransformer<Candle, Candle> {
@@ -12,9 +13,9 @@ public class StdDev implements FlowableTransformer<Candle, Candle> {
     private String key;
     private int periods;
 
-    private int currentPeriod = 0;
-
-    private Vector<Candle> candleBuffer = new Vector<>();
+    private LinkedList<Double> window = new LinkedList<>();
+    private Double variations = 0D;
+    private int counter = 0;
 
     public StdDev (String key, int periods) {
         this.key = key;
@@ -22,50 +23,32 @@ public class StdDev implements FlowableTransformer<Candle, Candle> {
     }
 
     public void reset () {
-        this.currentPeriod = 0;
-        this.candleBuffer.clear();
+        variations = 0D;
+        counter = 0;
+        window.clear();
     }
 
     @Override
     public Publisher<Candle> apply(Flowable<Candle> flowable) {
 
-        return flowable.map(candle ->  {
+        return flowable
+                .compose(new MA(this.key + "_MA", this.periods))
+                .map(candle ->  {
 
-            if (currentPeriod < periods -1) {
+                    counter = counter < periods ? counter + 1 : counter; // We don't increment counter when it reaches periods
 
-                candle.setStudyValue(this.key, 0D);
-                candleBuffer.add(candle);
-                currentPeriod ++;
+                    Double mean = candle.getStudyValue(this.key+"_MA");
+                    Double variation = Math.pow(candle.getClose() - mean, 2);
+                    variations += variation;
+                    window.add(variation);
 
-                return candle;
-            }
+                    variations = window.size() > periods ? variations - window.remove() : variations;
 
-            double movStdDev = 0D;
-            double mean = 0D;
+                    candle.setStudyValue(this.key, variations / counter);
 
-            candleBuffer.add(candle);
+                    return candle;
 
-            for (int i = currentPeriod - periods + 1; i < currentPeriod + 1; i++) {
-                mean = mean + candleBuffer.get(i).getClose();
-            }
-
-            mean = mean / periods;
-
-            for (int i = currentPeriod - periods + 1; i < currentPeriod + 1; i++) {
-                double toSqrt = candleBuffer.get(i).getClose() - mean;
-                movStdDev = movStdDev + ((toSqrt) * (toSqrt));
-            }
-
-
-            movStdDev = movStdDev / periods;
-            movStdDev = Math.sqrt(movStdDev);
-
-            currentPeriod ++;
-
-            candle.setStudyValue(this.key, movStdDev);
-
-            return candle;
-        });
+                });
 
     }
 }
