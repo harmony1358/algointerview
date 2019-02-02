@@ -1,9 +1,19 @@
+[![Build Status](https://travis-ci.com/harmony1358/algointerview.svg?branch=master)](https://travis-ci.com/harmony1358/algointerview)
+[![Coverage Status](https://coveralls.io/repos/github/harmony1358/algointerview/badge.svg?service=github)](https://coveralls.io/github/harmony1358/algointerview)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8fc3d9420b744e59a65bbf854da42511)](https://www.codacy.com/app/harmony1358/algointerview?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=harmony1358/algointerview&amp;utm_campaign=Badge_Grade)
 
 # Algotrader Strategy
 
 This project contains example strategy built for Algotrader.
 It implements basic BollingerBands strategy and executed orders on Algotrader simulator
+
+## Releases
+
+[[v1.1.0]](https://github.com/harmony1358/algointerview/releases)
+Second interation based on suggestions from Andy. [[Backlog]](https://github.com/harmony1358/algointerview/milestone/1?closed=1) 
+[[Pull request]](https://github.com/harmony1358/algointerview/pull/12)  
+[[v1.0.0]](https://github.com/harmony1358/algointerview/releases) 
+First attempt released at 28.01.2019
   
 ## Concept
 
@@ -14,58 +24,39 @@ The strategy itself and orders executor are also implemented as a stream transfo
 
 ## Classes
 
-### Data
+Class layout changed since last release. Additional classes are introduces. 
+Some changed their names and/or package.  
+[[Class reference]](./CLASSES.md) New Classes description
 
-[DataSource](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/data/DataSource.java)   
-Simple interface for flowable datasource
+## Testing
 
-[CSVDataSource](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/data/CSVDataSource.java)  
-CSV implementation of DataSource - it reads CSV file line by line and streams parsed Candles  
+Project uses JUnit for testing. Most of tests have own sample data files in "resources" folder 
+under the "test" scope of classpath.
+Those files contains data that is expected in assertions. 
+For example - Moving Average test loads "TEST_CASE_MA.csv" where opening price is expected assertion value. 
   
-[Candle](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/data/Candle.java)  
-Data object representing Candle. It also contains a HashMap that can store studies calculated in further processes.
+To launch tests type:  
+`mvn test`
 
-### Studies
+## Reporting
 
-All studies are implemented as a flowable transformers so they can be chained and won't break a stream
-  
-[MA](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/studies/MA.java)  
-Moving Average implementation
-  
-[StdDev](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/studies/StdDev.java)  
-Standard Deviation implementation
+Project using JaCoCo library for coverage reporting. 
+All JaCoCo reports are saved in "target/site" after tests.
 
-[BollingerBands](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/studies/BollingerBands.java)  
-Bollinger Bands implementation - it makes use of MA and StdDev putting them into stream chain
+## Automatic Code Review
 
-### Strategy
+Project makes automatic code review and QA check using Codacy.
+Code reviews are performed after each commit during CI Pipeline.
 
-The strategy concept is also implemented as a flowable transformer. It has to stream signals to the chain so they can be processed by executors
+## CI Pipeline
 
-[Side](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/Side.java)  
-Simple Enum representing order market Side
+Project has CI Pipeline configured with "Travis-CI". 
+After each commit pipeline starts - pipeline includes:  
+- building project
+- testing project
+- reporting to coveralls.io
+- performing automatic QA tests with Codacy
 
-[Signal](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/Signal.java~~~~~~~~)  
-Data object representing signal - this will be pushed into stream by strategy transformer
-
-[SimpleBollingerStrategy](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/strategy/SimpleBollingerStrategy.java)  
-Implementation of Simple Bollinger Bands strategy
-
-### Execution
-
-[ExecutionResult](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/execution/ExecutionResult.java)  
-Simple Enum representing the resulting state of signal execution
-
-[Execution](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/execution/Execution.java)  
-Data Object representing singnal execution summary (if no closing order - cacheBalance = -1)
-
-[StrategyExecutor](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/execution/StrategyExecutor.java)  
-The flowable transformer that executes signals in a stream chain using Algotrader's simulator
-
-### Application
-
-[App](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/App.java)  
-Main application class - building a stream chain from all above. Should print out cache balances when closing positions
 
 ## Building
   
@@ -79,3 +70,10 @@ Caution - you have to have algotraders simulator installed on your local maven!
 Project can be launched locally with maven task:    
   
 `mvn exec:java`  
+
+## Roadmap
+
+In case someone would like to push this project further (its on github anyway ;-) 
+here are my thoughts about what could be done in the future to grow it into sth really useful.
+
+[[Wishlist]](https://github.com/harmony1358/algointerview/milestone/2)
