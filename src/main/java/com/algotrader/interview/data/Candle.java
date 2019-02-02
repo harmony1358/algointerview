@@ -2,7 +2,6 @@ package com.algotrader.interview.data;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 
 public class Candle {
 
@@ -11,7 +10,6 @@ public class Candle {
     private Double high;
     private Double low;
     private Double close;
-    private HashMap<String, Double> studies = new HashMap<>();
 
     public Candle(Long stamp, Double open, Double high, Double low, Double close) {
         this.stamp = stamp;
@@ -61,16 +59,6 @@ public class Candle {
         this.close = close;
     }
 
-    public HashMap<String, Double> getStudies() { return this.studies; }
-
-    public void setStudyValue (String name, Double value) {
-        this.studies.put(name, value);
-    }
-
-    public Double getStudyValue (String name) {
-        return this.studies.get(name);
-    }
-
     @Override
     public String toString() {
 
@@ -86,11 +74,11 @@ public class Candle {
 
         String[] columns = string.split(",");
 
-        long stamp = new SimpleDateFormat("dd.MM.yyyy").parse(columns[0]).getTime();
-        double open  = Double.parseDouble(columns[1]);
-        double low   = Double.parseDouble(columns[2]);
-        double high  = Double.parseDouble(columns[3]);
-        double close = Double.parseDouble(columns[4]);
+        Long stamp = new SimpleDateFormat("dd.MM.yyyy").parse(columns[0]).getTime();
+        Double open  = Double.parseDouble(columns[1]);
+        Double low   = Double.parseDouble(columns[2]);
+        Double high  = Double.parseDouble(columns[3]);
+        Double close = Double.parseDouble(columns[4]);
 
         return new Candle(stamp, open, high, low, close);
     }
