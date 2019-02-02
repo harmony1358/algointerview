@@ -24,7 +24,7 @@ The strategy itself and orders executor are also implemented as a stream transfo
 
 ## Classes
 
-Class layout changed since last release. Additional classes are introduces. 
+Class layout changed since last release. Additional classes are introduced. 
 Some changed their names and/or package.  
 [[Class reference]](./CLASSES.md) New Classes description
 
