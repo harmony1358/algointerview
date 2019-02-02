@@ -52,10 +52,10 @@ Code reviews are performed after each commit during CI Pipeline.
 
 Project has CI Pipeline configured with "Travis-CI". 
 After each commit pipeline starts - pipeline includes:  
-  - building project
-  - testing project
-  - reporting to coveralls.io
-  - performing automatic QA tests with Codacy
+  - building project  
+  - testing project  
+  - reporting to coveralls.io  
+  - performing automatic QA tests with Codacy  
 
 
 ## Building

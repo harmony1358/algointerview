@@ -1,5 +1,20 @@
 # Class reference
 
+## Changes worth mentioning :)
+Studies are totally reimplemented - there are no loops and counter overflows. 
+Instead - sliding window as a LinkedList is introduced.  
+
+Studies now are configured with valueKey - there is no reason we should limit studies
+to operate only on closing prices - we can use any value from StudyEnvelope - 
+ie. we can calculate MA from StdDev or from opening prices.  
+
+StudyEnvelope introduced - as Andy noticed - studies should not store their values in Candle object
+since it should stay pure data object. 
+This solution wraps candle in StudyEnvelope object where also other data can be stored.  
+
+SimpleBollingerStrategy - there is no reason to calculate MA twice - StdDev also uses MA and stores its values
+in StudyEnvelope - we can eliminate calculation overkill simply fetching this data from envelope.
+
 ## Data
 
 [DataSource](https://github.com/harmony1358/algointerview/blob/master/src/main/java/com/algotrader/interview/data/DataSource.java)   
