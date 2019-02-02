@@ -25,12 +25,6 @@ public class MA implements FlowableTransformer<StudyEnvelope, StudyEnvelope> {
 
     }
 
-    public void reset () {
-        this.sum = 0D;
-        this.counter = 0;
-        window.clear();
-    }
-
     @Override
     public Publisher<StudyEnvelope> apply(Flowable<StudyEnvelope> flowable) {
 
