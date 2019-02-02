@@ -16,10 +16,10 @@ public class SimpleBollingerStrategy implements FlowableTransformer<StudyEnvelop
     private final int periods;
     private final double deviations;
 
-    private Double previousPrice;
-    private Double previousUpper;
-    private Double previousLower;
-    private Double previousMiddle;
+    private double previousPrice;
+    private double previousUpper;
+    private double previousLower;
+    private double previousMiddle;
 
     public SimpleBollingerStrategy(String instrument, String valueKey, int periods, double deviations) {
 
@@ -36,10 +36,10 @@ public class SimpleBollingerStrategy implements FlowableTransformer<StudyEnvelop
                 .compose(new BollingerBands("BB", valueKey, periods, deviations))
                 .map(studies -> {
 
-                    Double currentPrice = studies.getStudyValue("CLOSE");
-                    Double bbUpper  = studies.getStudyValue("BB_UPPER");
-                    Double bbLower  = studies.getStudyValue("BB_LOWER");
-                    Double bbMiddle = studies.getStudyValue("BB_MIDDLE");
+                    double currentPrice = studies.getStudyValue("CLOSE");
+                    double bbUpper  = studies.getStudyValue("BB_UPPER");
+                    double bbLower  = studies.getStudyValue("BB_LOWER");
+                    double bbMiddle = studies.getStudyValue("BB_MIDDLE");
 
                     if (crossDown(previousPrice, currentPrice, previousMiddle, bbMiddle)) {
 
@@ -72,7 +72,7 @@ public class SimpleBollingerStrategy implements FlowableTransformer<StudyEnvelop
     }
 
     private Signal emitSignal (String instrument, Long stamp, Side side,
-                               Double price, Double bbUpper, Double bbLower, Double bbMiddle) {
+                               double price, double bbUpper, double bbLower, double bbMiddle) {
 
         previousPrice = price;
         previousUpper = bbUpper;
