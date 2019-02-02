@@ -4,7 +4,7 @@ import ch.algotrader.simulation.Simulator;
 import ch.algotrader.simulation.SimulatorImpl;
 import com.algotrader.interview.data.CSVDataSource;
 import com.algotrader.interview.data.DataSource;
-import com.algotrader.interview.execution.ExecutionResult;
+import com.algotrader.interview.execution.ExecutionStatus;
 import com.algotrader.interview.execution.StrategyExecutor;
 import com.algotrader.interview.strategy.Side;
 import com.algotrader.interview.strategy.Signal;
@@ -41,10 +41,10 @@ public class ExecutorTest extends BaseTest {
 
 
                     if (handler.signal.getSide() == Side.BUY || handler.signal.getSide() == Side.SELL)
-                        assertSame(execution.getResult(), ExecutionResult.OK);
+                        assertSame(execution.getResult(), ExecutionStatus.OK);
 
 
-                });
+                }).dispose();
 
     }
 
