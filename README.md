@@ -61,7 +61,6 @@ After each commit pipeline starts - pipeline includes:
 ## Building
   
 Project is built by "maven" build system.  
-Caution - you have to have algotraders simulator installed on your local maven!  
 
 `mvn verify`
 
