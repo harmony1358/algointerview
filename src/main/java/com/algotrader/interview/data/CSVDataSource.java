@@ -11,7 +11,7 @@ import java.net.URL;
 
 public class CSVDataSource implements DataSource {
 
-    private static Logger LOG = LogManager.getLogger(CSVDataSource.class);
+    private static final Logger LOG = LogManager.getLogger(CSVDataSource.class);
     @Override
     public Flowable<Candle> start(String instrumentName) {
 
@@ -25,13 +25,6 @@ public class CSVDataSource implements DataSource {
         }
 
         File file = new File(url.getFile());
-
-        if (file == null) {
-
-            LOG.debug("Could not open file: " + instrumentName + ".csv");
-            return Flowable.never();
-
-        }
 
         LOG.debug("Reading from file: " + file.getAbsolutePath());
 

@@ -7,7 +7,7 @@ import ch.algotrader.simulation.SimulatorImpl;
 import com.algotrader.interview.data.CSVDataSource;
 import com.algotrader.interview.data.DataSource;
 import com.algotrader.interview.strategy.StudyEnvelope;
-import com.algotrader.interview.execution.ExecutionResult;
+import com.algotrader.interview.execution.ExecutionStatus;
 import com.algotrader.interview.execution.StrategyExecutor;
 import com.algotrader.interview.strategy.Side;
 import com.algotrader.interview.strategy.SimpleBollingerStrategy;
@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 public class App 
 {
 
-    private static Logger LOG = LogManager.getLogger(App.class);
+    private static final Logger LOG = LogManager.getLogger(App.class);
     public static void main(String[] argv) {
 
         final Simulator simulator = new SimulatorImpl();
@@ -29,7 +29,7 @@ public class App
                 .compose(new StrategyExecutor(simulator, 1000000))
                 .subscribe(execution -> {
 
-                    if ((execution.getResult() == ExecutionResult.OK)
+                    if ((execution.getResult() == ExecutionStatus.OK)
                             && (execution.getSignal().getSide() == Side.EXIT_LONG
                             || execution.getSignal().getSide() == Side.EXIT_SHORT))
 
@@ -62,7 +62,8 @@ public class App
                         simulator.sendOrder(new MarketOrder(ch.algotrader.enumeration.Side.BUY, quant * -1));
 
                     }
-                });
+
+                }).dispose();
 
     }
 }

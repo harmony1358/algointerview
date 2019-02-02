@@ -24,12 +24,6 @@ public class StdDev implements FlowableTransformer<StudyEnvelope, StudyEnvelope>
         this.periods = periods;
     }
 
-    public void reset () {
-        variations = 0D;
-        counter = 0;
-        window.clear();
-    }
-
     @Override
     public Publisher<StudyEnvelope> apply(Flowable<StudyEnvelope> flowable) {
 

@@ -9,17 +9,17 @@ import org.reactivestreams.Publisher;
 
 public class SimpleBollingerStrategy implements FlowableTransformer<StudyEnvelope, Signal> {
 
-    private static Logger LOG = LogManager.getLogger(SimpleBollingerStrategy.class);
+    private static final Logger LOG = LogManager.getLogger(SimpleBollingerStrategy.class);
 
     private final String instrument;
     private final String valueKey;
     private final int periods;
     private final double deviations;
 
-    private double previousPrice;
-    private double previousUpper;
-    private double previousLower;
-    private double previousMiddle;
+    private Double previousPrice;
+    private Double previousUpper;
+    private Double previousLower;
+    private Double previousMiddle;
 
     public SimpleBollingerStrategy(String instrument, String valueKey, int periods, double deviations) {
 
@@ -30,25 +30,16 @@ public class SimpleBollingerStrategy implements FlowableTransformer<StudyEnvelop
 
     }
 
-    public void reset () {
-
-        this.previousPrice = 0d;
-        this.previousLower = 0d;
-        this.previousMiddle = 0d;
-        this.previousUpper = 0d;
-
-    }
-
     @Override
     public Publisher<Signal> apply(Flowable<StudyEnvelope> flowable) {
         return flowable
                 .compose(new BollingerBands("BB", valueKey, periods, deviations))
                 .map(studies -> {
 
-                    double currentPrice = studies.getStudyValue("CLOSE");
-                    double bbUpper  = studies.getStudyValue("BB_UPPER");
-                    double bbLower  = studies.getStudyValue("BB_LOWER");
-                    double bbMiddle = studies.getStudyValue("BB_MIDDLE");
+                    Double currentPrice = studies.getStudyValue("CLOSE");
+                    Double bbUpper  = studies.getStudyValue("BB_UPPER");
+                    Double bbLower  = studies.getStudyValue("BB_LOWER");
+                    Double bbMiddle = studies.getStudyValue("BB_MIDDLE");
 
                     if (crossDown(previousPrice, currentPrice, previousMiddle, bbMiddle)) {
 

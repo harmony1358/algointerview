@@ -4,6 +4,6 @@ import io.reactivex.Flowable;
 
 public interface DataSource {
 
-    Flowable<Candle> start (String instruentName);
+    Flowable<Candle> start (String instrumentName);
 
 }

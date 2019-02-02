@@ -7,8 +7,6 @@ public class Signal {
     private Side    side;
     private Double  price;
 
-    public Signal() {}
-
     public Signal(String instrument, Long stamp, Side side, Double price) {
         this.instrument = instrument;
         this.stamp = stamp;

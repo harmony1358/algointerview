@@ -13,7 +13,7 @@ import org.reactivestreams.Publisher;
 
 public class StrategyExecutor implements FlowableTransformer<Signal, Execution> {
 
-    private static Logger LOG = LogManager.getLogger(StrategyExecutor.class);
+    private static final Logger LOG = LogManager.getLogger(StrategyExecutor.class);
 
     private final Simulator simulator;
     public StrategyExecutor(Simulator simulator, double initialCashBalance) {
@@ -51,7 +51,7 @@ public class StrategyExecutor implements FlowableTransformer<Signal, Execution> 
     }
 
     private Execution executeDoNothing (Signal signal) {
-        return new Execution(signal.getStamp(), signal, -1d, ExecutionResult.SKIPPED);
+        return new Execution(signal.getStamp(), signal, -1d, ExecutionStatus.SKIPPED);
     }
 
     private Execution executeBuy (Signal signal) {
@@ -59,7 +59,7 @@ public class StrategyExecutor implements FlowableTransformer<Signal, Execution> 
         LOG.debug("Executing Signal: BUY, Quant: 1");
 
         simulator.sendOrder(new MarketOrder(ch.algotrader.enumeration.Side.BUY, 1));
-        return new Execution(signal.getStamp(), signal, -1d, ExecutionResult.OK);
+        return new Execution(signal.getStamp(), signal, -1d, ExecutionStatus.OK);
     }
 
     private Execution executeSell (Signal signal) {
@@ -67,7 +67,7 @@ public class StrategyExecutor implements FlowableTransformer<Signal, Execution> 
         LOG.debug("Executing Signal: SELL, Quant: 1");
 
         simulator.sendOrder(new MarketOrder(ch.algotrader.enumeration.Side.SELL, 1));
-        return new Execution(signal.getStamp(), signal, -1d, ExecutionResult.OK);
+        return new Execution(signal.getStamp(), signal, -1d, ExecutionStatus.OK);
     }
 
     private Execution executeExitLong (Signal signal) {
@@ -77,7 +77,7 @@ public class StrategyExecutor implements FlowableTransformer<Signal, Execution> 
 
             LOG.debug("Rejecting Signal: EXIT_LONG, reason: no positions to exit");
 
-            return new Execution(signal.getStamp(), signal, -1d, ExecutionResult.REJECTED);
+            return new Execution(signal.getStamp(), signal, -1d, ExecutionStatus.REJECTED);
 
         }
 
@@ -90,14 +90,14 @@ public class StrategyExecutor implements FlowableTransformer<Signal, Execution> 
 
                 simulator.sendOrder(new MarketOrder(ch.algotrader.enumeration.Side.SELL, quant));
                 double cacheBalance = simulator.getCashBalance();
-                return new Execution(signal.getStamp(), signal, cacheBalance, ExecutionResult.OK);
+                return new Execution(signal.getStamp(), signal, cacheBalance, ExecutionStatus.OK);
 
             }
         }
 
         LOG.debug("Rejecting Signal: EXIT_LONG, reason: we are on SHORT direction");
 
-        return new Execution(signal.getStamp(), signal, -1d, ExecutionResult.REJECTED);
+        return new Execution(signal.getStamp(), signal, -1d, ExecutionStatus.REJECTED);
 
     }
 
@@ -108,7 +108,7 @@ public class StrategyExecutor implements FlowableTransformer<Signal, Execution> 
 
             LOG.debug("Rejecting Signal: EXIT_SHORT, reason: no positions to exit");
 
-            return new Execution(signal.getStamp(), signal, -1d, ExecutionResult.REJECTED);
+            return new Execution(signal.getStamp(), signal, -1d, ExecutionStatus.REJECTED);
         }
 
         if (p.getDirection() == Direction.SHORT) {
@@ -121,12 +121,12 @@ public class StrategyExecutor implements FlowableTransformer<Signal, Execution> 
 
                 simulator.sendOrder(new MarketOrder(ch.algotrader.enumeration.Side.BUY, quant * -1));
                 double cacheBalance = simulator.getCashBalance();
-                return new Execution(signal.getStamp(), signal, cacheBalance, ExecutionResult.OK);
+                return new Execution(signal.getStamp(), signal, cacheBalance, ExecutionStatus.OK);
             }
         }
 
         LOG.debug("Rejecting Signal: EXIT_SHORT, reason: we are on LONG direction");
 
-        return new Execution(signal.getStamp(), signal, -1d, ExecutionResult.REJECTED);
+        return new Execution(signal.getStamp(), signal, -1d, ExecutionStatus.REJECTED);
     }
 }

@@ -74,11 +74,11 @@ public class Candle {
 
         String[] columns = string.split(",");
 
-        long stamp = new SimpleDateFormat("dd.MM.yyyy").parse(columns[0]).getTime();
-        double open  = Double.parseDouble(columns[1]);
-        double low   = Double.parseDouble(columns[2]);
-        double high  = Double.parseDouble(columns[3]);
-        double close = Double.parseDouble(columns[4]);
+        Long stamp = new SimpleDateFormat("dd.MM.yyyy").parse(columns[0]).getTime();
+        Double open  = Double.parseDouble(columns[1]);
+        Double low   = Double.parseDouble(columns[2]);
+        Double high  = Double.parseDouble(columns[3]);
+        Double close = Double.parseDouble(columns[4]);
 
         return new Candle(stamp, open, high, low, close);
     }

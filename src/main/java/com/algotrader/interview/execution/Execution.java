@@ -7,9 +7,9 @@ public class Execution {
     private Long stamp;
     private Signal signal;
     private Double balance;
-    private ExecutionResult result;
+    private ExecutionStatus result;
 
-    public Execution(Long stamp, Signal signal, Double balance, ExecutionResult result) {
+    public Execution(Long stamp, Signal signal, Double balance, ExecutionStatus result) {
         this.stamp = stamp;
         this.signal = signal;
         this.balance = balance;
@@ -40,11 +40,11 @@ public class Execution {
         this.balance = balance;
     }
 
-    public ExecutionResult getResult() {
+    public ExecutionStatus getResult() {
         return result;
     }
 
-    public void setResult(ExecutionResult result) {
+    public void setResult(ExecutionStatus result) {
         this.result = result;
     }
 }
