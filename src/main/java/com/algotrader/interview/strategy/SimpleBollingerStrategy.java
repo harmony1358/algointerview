@@ -1,6 +1,7 @@
 package com.algotrader.interview.strategy;
 
 import com.algotrader.interview.studies.BollingerBands;
+import com.algotrader.interview.studies.StudyEnvelope;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import org.apache.logging.log4j.LogManager;

@@ -1,6 +1,5 @@
 package com.algotrader.interview.studies;
 
-import com.algotrader.interview.strategy.StudyEnvelope;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import org.reactivestreams.Publisher;

@@ -1,6 +1,6 @@
 package com.algotrader.interview;
 
-import com.algotrader.interview.strategy.StudyEnvelope;
+import com.algotrader.interview.studies.StudyEnvelope;
 import com.algotrader.interview.studies.BollingerBands;
 import com.algotrader.interview.studies.MA;
 import com.algotrader.interview.studies.StdDev;

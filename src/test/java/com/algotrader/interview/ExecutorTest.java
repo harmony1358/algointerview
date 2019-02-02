@@ -9,7 +9,7 @@ import com.algotrader.interview.execution.StrategyExecutor;
 import com.algotrader.interview.strategy.Side;
 import com.algotrader.interview.strategy.Signal;
 import com.algotrader.interview.strategy.SimpleBollingerStrategy;
-import com.algotrader.interview.strategy.StudyEnvelope;
+import com.algotrader.interview.studies.StudyEnvelope;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertSame;

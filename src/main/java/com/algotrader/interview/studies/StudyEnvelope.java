@@ -1,4 +1,4 @@
-package com.algotrader.interview.strategy;
+package com.algotrader.interview.studies;
 
 import com.algotrader.interview.data.Candle;
 

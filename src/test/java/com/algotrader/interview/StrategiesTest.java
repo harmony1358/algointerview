@@ -2,7 +2,7 @@ package com.algotrader.interview;
 
 import com.algotrader.interview.data.Candle;
 import com.algotrader.interview.strategy.SimpleBollingerStrategy;
-import com.algotrader.interview.strategy.StudyEnvelope;
+import com.algotrader.interview.studies.StudyEnvelope;
 import org.junit.Test;
 
 import static com.algotrader.interview.strategy.Side.*;

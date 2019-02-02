@@ -6,7 +6,7 @@ import ch.algotrader.simulation.Simulator;
 import ch.algotrader.simulation.SimulatorImpl;
 import com.algotrader.interview.data.CSVDataSource;
 import com.algotrader.interview.data.DataSource;
-import com.algotrader.interview.strategy.StudyEnvelope;
+import com.algotrader.interview.studies.StudyEnvelope;
 import com.algotrader.interview.execution.ExecutionStatus;
 import com.algotrader.interview.execution.StrategyExecutor;
 import com.algotrader.interview.strategy.Side;
