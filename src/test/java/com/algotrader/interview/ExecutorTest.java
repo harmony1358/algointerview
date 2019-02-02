@@ -1,5 +1,7 @@
 package com.algotrader.interview;
 
+import ch.algotrader.simulation.Simulator;
+import ch.algotrader.simulation.SimulatorImpl;
 import com.algotrader.interview.data.CSVDataSource;
 import com.algotrader.interview.data.DataSource;
 import com.algotrader.interview.execution.ExecutionResult;
@@ -22,6 +24,7 @@ public class ExecutorTest extends BaseTest {
         }
 
         final Handler handler = new Handler();
+        final Simulator simulator = new SimulatorImpl();
 
         DataSource ds = new CSVDataSource();
         ds.start("TEST_CASE_DS")
@@ -33,7 +36,7 @@ public class ExecutorTest extends BaseTest {
                     return signal;
 
                 })
-                .compose(new StrategyExecutor(1000000))
+                .compose(new StrategyExecutor(simulator, 1000000))
                 .subscribe(execution -> {
 
 

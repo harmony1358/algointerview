@@ -18,6 +18,7 @@ public class StdDev implements FlowableTransformer<StudyEnvelope, StudyEnvelope>
     private int counter = 0;
 
     public StdDev (String key, String valueKey, int periods) {
+
         this.key = key;
         this.valueKey = valueKey;
         this.periods = periods;

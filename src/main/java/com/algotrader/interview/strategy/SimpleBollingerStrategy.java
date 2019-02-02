@@ -3,9 +3,13 @@ package com.algotrader.interview.strategy;
 import com.algotrader.interview.studies.BollingerBands;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.reactivestreams.Publisher;
 
 public class SimpleBollingerStrategy implements FlowableTransformer<StudyEnvelope, Signal> {
+
+    private static Logger LOG = LogManager.getLogger(SimpleBollingerStrategy.class);
 
     private final String instrument;
     private final String valueKey;
@@ -83,6 +87,9 @@ public class SimpleBollingerStrategy implements FlowableTransformer<StudyEnvelop
         previousUpper = bbUpper;
         previousLower = bbLower;
         previousMiddle = bbMiddle;
+
+        if (side != Side.DO_NOTHING)
+            LOG.debug("Emitting Signal: " + side + " at " + price);
 
         return new Signal(instrument, stamp, side, price);
 
